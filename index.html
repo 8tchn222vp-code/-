@@ -7,17 +7,26 @@
     <style>
         body { font-family: sans-serif; padding: 20px; background-color: #f0f8ff; }
         h1 { color: #2e8b57; text-align: center; }
+        .controls { text-align: center; margin-bottom: 20px; }
+        .btn { padding: 10px 20px; font-size: 16px; cursor: pointer; background-color: #2e8b57; color: white; border: none; border-radius: 5px; }
+        .btn.active { background-color: #1b5233; }
         .table-container { overflow-x: auto; }
         table { width: 100%; max-width: 800px; margin: 0 auto; border-collapse: collapse; background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         th, td { padding: 8px 10px; border-bottom: 1px solid #ddd; text-align: left; font-size: 14px; }
         th { background-color: #2e8b57; color: white; position: sticky; top: 0; }
         tr:hover { background-color: #f5f5f5; }
         .check-col { text-align: center; width: 40px; }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
     <h1>とびだせ どうぶつの森<br>魚図鑑 全72種</h1>
+
+    <div class="controls">
+        <button class="btn active" id="btn-all" onclick="filterList('all')">すべて表示</button>
+        <button class="btn" id="btn-uncompleted" onclick="filterList('uncompleted')">未コンプのみ</button>
+    </div>
 
     <div class="table-container">
         <table>
@@ -97,43 +106,4 @@
             { id: 56, name: "エイ", habitat: "海", season: "8月〜11月", time: "早朝〜夜（4時〜21時）" },
             { id: 57, name: "マンボウ", habitat: "海", season: "6月〜9月", time: "早朝〜夜（4時〜21時）" },
             { id: 58, name: "シュモクザメ", habitat: "海", season: "6月〜9月", time: "夕方〜朝（16時〜9時）" },
-            { id: 59, name: "サメ", habitat: "海", season: "6月〜9月", time: "夕方〜朝（16時〜9時）" },
-            { id: 60, name: "ノコギリザメ", habitat: "海", season: "6月〜9月", time: "夕方〜朝（16時〜9時）" },
-            { id: 61, name: "ジンベエザメ", habitat: "海", season: "6月〜9月", time: "一日中" },
-            { id: 62, name: "リュウグウノツカイ", habitat: "海", season: "12月〜5月", time: "一日中" },
-            { id: 63, name: "アンコウ", habitat: "海", season: "11月〜3月", time: "夕方〜朝（16時〜9時）" },
-            { id: 64, name: "ウツボ", habitat: "海", season: "8月〜10月", time: "一日中" },
-            { id: 65, name: "ヒレナガエイ", habitat: "海", season: "8月〜11月", time: "早朝〜夜（4時〜21時）" },
-            { id: 66, name: "イカ", habitat: "海", season: "12月〜8月", time: "一日中" },
-            { id: 67, name: "パイク", habitat: "川", season: "9月〜12月", time: "早朝〜夜（4時〜21時）" },
-            { id: 68, name: "ワカサギ", habitat: "川", season: "12月〜2月", time: "一日中" },
-            { id: 69, name: "ブルーギル", habitat: "川", season: "一年中", time: "昼（9時〜16時）" },
-            { id: 70, name: "ブラックバス", habitat: "川", season: "一年中", time: "一日中" },
-            { id: 71, name: "ライギョ", habitat: "池", season: "6月〜8月", time: "昼（9時〜16時）" },
-            { id: 72, name: "シーラカンス", habitat: "海（雨・雪の日）", season: "一年中", time: "夕方〜朝（16時〜9時）" }
-        ];
-
-        const listContainer = document.getElementById('fish-list');
-
-        // テーブルの生成
-        fishData.forEach(fish => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td class="check-col"><input type="checkbox" id="f${fish.id}"></td>
-                <td>${fish.name}</td>
-                <td>${fish.habitat}</td>
-                <td>${fish.season}</td>
-                <td>${fish.time}</td>
-            `;
-            listContainer.appendChild(tr);
-        });
-
-        // チェック状態の保存と復元
-        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
-            const id = checkbox.id;
-            if (localStorage.getItem(id) === 'true') checkbox.checked = true;
-            checkbox.addEventListener('change', () => localStorage.setItem(id, checkbox.checked));
-        });
-    </script>
-</body>
-</html>
+            { id: 59, name: "サメ", habitat: "海",
