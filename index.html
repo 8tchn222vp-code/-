@@ -106,4 +106,68 @@
             { id: 56, name: "エイ", habitat: "海", season: "8月〜11月", time: "早朝〜夜（4時〜21時）" },
             { id: 57, name: "マンボウ", habitat: "海", season: "6月〜9月", time: "早朝〜夜（4時〜21時）" },
             { id: 58, name: "シュモクザメ", habitat: "海", season: "6月〜9月", time: "夕方〜朝（16時〜9時）" },
-            { id: 59, name: "サメ", habitat: "海",
+            { id: 59, name: "サメ", habitat: "海", season: "6月〜9月", time: "夕方〜朝（16時〜9時）" },
+            { id: 60, name: "ノコギリザメ", habitat: "海", season: "6月〜9月", time: "夕方〜朝（16時〜9時）" },
+            { id: 61, name: "ジンベエザメ", habitat: "海", season: "6月〜9月", time: "一日中" },
+            { id: 62, name: "リュウグウノツカイ", habitat: "海", season: "12月〜5月", time: "一日中" },
+            { id: 63, name: "アンコウ", habitat: "海", season: "11月〜3月", time: "夕方〜朝（16時〜9時）" },
+            { id: 64, name: "ウツボ", habitat: "海", season: "8月〜10月", time: "一日中" },
+            { id: 65, name: "ヒレナガエイ", habitat: "海", season: "8月〜11月", time: "早朝〜夜（4時〜21時）" },
+            { id: 66, name: "イカ", habitat: "海", season: "12月〜8月", time: "一日中" },
+            { id: 67, name: "パイク", habitat: "川", season: "9月〜12月", time: "早朝〜夜（4時〜21時）" },
+            { id: 68, name: "ワカサギ", habitat: "川", season: "12月〜2月", time: "一日中" },
+            { id: 69, name: "ブルーギル", habitat: "川", season: "一年中", time: "昼（9時〜16時）" },
+            { id: 70, name: "ブラックバス", habitat: "川", season: "一年中", time: "一日中" },
+            { id: 71, name: "ライギョ", habitat: "池", season: "6月〜8月", time: "昼（9時〜16時）" },
+            { id: 72, name: "シーラカンス", habitat: "海（雨・雪の日）", season: "一年中", time: "夕方〜朝（16時〜9時）" }
+        ];
+
+        const listContainer = document.getElementById('fish-list');
+        let currentFilter = 'all';
+
+        // テーブルの生成
+        fishData.forEach(fish => {
+            const tr = document.createElement('tr');
+            tr.id = `row-f${fish.id}`;
+            tr.innerHTML = `
+                <td class="check-col"><input type="checkbox" id="f${fish.id}" onchange="onCheckChange()"></td>
+                <td>${fish.name}</td>
+                <td>${fish.habitat}</td>
+                <td>${fish.season}</td>
+                <td>${fish.time}</td>
+            `;
+            listContainer.appendChild(tr);
+        });
+
+        // チェック状態の保存と復元
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            const id = checkbox.id;
+            if (localStorage.getItem(id) === 'true') checkbox.checked = true;
+        });
+
+        // フィルタリング機能
+        function filterList(type) {
+            currentFilter = type;
+            document.getElementById('btn-all').classList.toggle('active', type === 'all');
+            document.getElementById('btn-uncompleted').classList.toggle('active', type === 'uncompleted');
+            
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                const row = document.getElementById(`row-${checkbox.id}`);
+                if (type === 'uncompleted' && checkbox.checked) {
+                    row.classList.add('hidden');
+                } else {
+                    row.classList.remove('hidden');
+                }
+            });
+        }
+
+        // チェック変更時の処理
+        function onCheckChange() {
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                localStorage.setItem(checkbox.id, checkbox.checked);
+            });
+            filterList(currentFilter);
+        }
+    </script>
+</body>
+</html>
