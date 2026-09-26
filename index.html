@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>とびだせ どうぶつの森 魚図鑑チェックリスト</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background-color: #f0f8ff; }
+        h1 { color: #2e8b57; text-align: center; }
+        .table-container { overflow-x: auto; }
+        table { width: 100%; max-width: 800px; margin: 0 auto; border-collapse: collapse; background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        th, td { padding: 8px 10px; border-bottom: 1px solid #ddd; text-align: left; font-size: 14px; }
+        th { background-color: #2e8b57; color: white; position: sticky; top: 0; }
+        tr:hover { background-color: #f5f5f5; }
+        .check-col { text-align: center; width: 40px; }
+    </style>
+</head>
+<body>
+
+    <h1>とびだせ どうぶつの森<br>魚図鑑 全72種</h1>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th class="check-col">Get</th>
+                    <th>魚の名前</th>
+                    <th>生息地</th>
+                    <th>釣れる季節</th>
+                    <th>時間帯</th>
+                </tr>
+            </thead>
+            <tbody id="fish-list">
+                <!-- ここにJavaScriptで魚のデータが挿入されます -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // 魚のデータ（全72種）
+        const fishData = [
+            { id: 1, name: "タナゴ", habitat: "川", season: "11月〜2月", time: "一日中" },
+            { id: 2, name: "オイカワ", habitat: "川", season: "一年中", time: "昼（9時〜16時）" },
+            { id: 3, name: "フナ", habitat: "川", season: "一年中", time: "一日中" },
+            { id: 4, name: "ウグイ", habitat: "川", season: "一年中", time: "夕方〜朝（16時〜9時）" },
+            { id: 5, name: "コイ", habitat: "川", season: "一年中", time: "一日中" },
+            { id: 6, name: "ニシキゴイ", habitat: "川", season: "一年中", time: "夕方〜朝（16時〜9時）" },
+            { id: 7, name: "キンギョ", habitat: "川", season: "一年中", time: "一日中" },
+            { id: 8, name: "デメキン", habitat: "川", season: "一年中", time: "昼（9時〜16時）" },
+            { id: 9, name: "ランチュウ", habitat: "川", season: "一年中", time: "昼（9時〜16時）" },
+            { id: 10, name: "メダカ", habitat: "池", season: "4月〜8月", time: "一日中" },
+            { id: 11, name: "ザリガニ", habitat: "池", season: "4月〜9月", time: "一日中" },
+            { id: 12, name: "スッポン", habitat: "川", season: "8月〜9月", time: "夕方〜朝（16時〜9時）" },
+            { id: 13, name: "オタマジャクシ", habitat: "池", season: "3月〜7月", time: "一日中" },
+            { id: 14, name: "カエル", habitat: "池", season: "5月〜8月", time: "一日中" },
+            { id: 15, name: "ドンコ", habitat: "川", season: "一年中", time: "夕方〜朝（16時〜9時）" },
+            { id: 16, name: "ドジョウ", habitat: "川", season: "3月〜5月", time: "一日中" },
+            { id: 17, name: "ナマズ", habitat: "池", season: "5月〜10月", time: "夕方〜朝（16時〜9時）" },
+            { id: 18, name: "ウナギ", habitat: "川", season: "6月〜9月", time: "夕方〜朝（16時〜9時）" },
+            { id: 19, name: "ハナヒゲウツボ", habitat: "海", season: "6月〜10月", time: "一日中" },
+            { id: 20, name: "アユ", habitat: "川", season: "7月〜9月", time: "一日中" },
+            { id: 21, name: "ヤマメ", habitat: "川", season: "3月〜6月 / 9月〜11月", time: "朝夕（4時〜9時、16時〜21時）" },
+            { id: 22, name: "オオイワナ", habitat: "滝", season: "3月〜6月 / 9月〜11月", time: "朝夕（4時〜9時、16時〜21時）" },
+            { id: 23, name: "ニジマス", habitat: "川", season: "3月〜6月 / 9月〜11月", time: "朝夕（4時〜9時、16時〜21時）" },
+            { id: 24, name: "イトウ", habitat: "川", season: "12月〜2月", time: "夕方〜朝（16時〜9時）" },
+            { id: 25, name: "サケ", habitat: "河口", season: "9月", time: "一日中" },
+            { id: 26, name: "キングサーモン", habitat: "河口", season: "9月", time: "一日中" },
+            { id: 27, name: "グッピー", habitat: "川", season: "4月〜11月", time: "昼（9時〜16時）" },
+            { id: 28, name: "ドクターフィッシュ", habitat: "川", season: "5月〜9月", time: "昼（9時〜16時）" },
+            { id: 29, name: "エンゼルフィッシュ", habitat: "川", season: "5月〜10月", time: "夕方〜朝（16時〜9時）" },
+            { id: 30, name: "ネオンテトラ", habitat: "川", season: "4月〜11月", time: "昼（9時〜16時）" },
+            { id: 31, name: "ピラニア", habitat: "川", season: "6月〜9月", time: "昼・夜（9時〜16時、21時〜4時）" },
+            { id: 32, name: "アロワナ", habitat: "川", season: "6月〜9月", time: "夕方〜朝（16時〜9時）" },
+            { id: 33, name: "ドラド", habitat: "川", season: "6月〜9月", time: "早朝〜夜（4時〜21時）" },
+            { id: 34, name: "ガー", habitat: "池", season: "6月〜9月", time: "夕方〜朝（16時〜9時）" },
+            { id: 35, name: "ピラルク", habitat: "川", season: "7月〜9月", time: "夕方〜朝（16時〜9時）" },
+            { id: 36, name: "エンドリケリー", habitat: "川", season: "6月〜9月", time: "夜（21時〜4時）" },
+            { id: 37, name: "クリオネ", habitat: "海", season: "12月〜2月", time: "一日中" },
+            { id: 38, name: "タツノオトシゴ", habitat: "海", season: "4月〜11月", time: "一日中" },
+            { id: 39, name: "クマノミ", habitat: "海", season: "4月〜9月", time: "一日中" },
+            { id: 40, name: "ツノダシ", habitat: "海", season: "4月〜9月", time: "一日中" },
+            { id: 41, name: "チョウチョウウオ", habitat: "海", season: "4月〜9月", time: "一日中" },
+            { id: 42, name: "ナポレオンフィッシュ", habitat: "海", season: "7月〜8月", time: "早朝〜夜（4時〜21時）" },
+            { id: 43, name: "ミノカサゴ", habitat: "海", season: "4月〜11月", time: "一日中" },
+            { id: 44, name: "フグ", habitat: "海", season: "11月〜2月", time: "夜（21時〜4時）" },
+            { id: 45, name: "ハリセンボン", habitat: "海", season: "7月〜9月", time: "一日中" },
+            { id: 46, name: "アジ", habitat: "海", season: "一年中", time: "一日中" },
+            { id: 47, name: "イシダイ", habitat: "海", season: "3月〜11月", time: "一日中" },
+            { id: 48, name: "スズキ", habitat: "海", season: "一年中", time: "一日中" },
+            { id: 49, name: "タイ", habitat: "海", season: "一年中", time: "一日中" },
+            { id: 50, name: "カレイ", habitat: "海", season: "10月〜4月", time: "一日中" },
+            { id: 51, name: "ヒラメ", habitat: "海", season: "一年中", time: "一日中" },
+            { id: 52, name: "マグロ", habitat: "海", season: "11月〜3月", time: "一日中" },
+            { id: 53, name: "カジキ", habitat: "海", season: "7月〜9月", time: "一日中" },
+            { id: 54, name: "ロウニンアジ", habitat: "海", season: "6月〜9月", time: "一日中" },
+            { id: 55, name: "シイラ", habitat: "海", season: "6月〜9月", time: "一日中" },
+            { id: 56, name: "エイ", habitat: "海", season: "8月〜11月", time: "早朝〜夜（4時〜21時）" },
+            { id: 57, name: "マンボウ", habitat: "海", season: "6月〜9月", time: "早朝〜夜（4時〜21時）" },
+            { id: 58, name: "シュモクザメ", habitat: "海", season: "6月〜9月", time: "夕方〜朝（16時〜9時）" },
+            { id: 59, name: "サメ", habitat: "海", season: "6月〜9月", time: "夕方〜朝（16時〜9時）" },
+            { id: 60, name: "ノコギリザメ", habitat: "海", season: "6月〜9月", time: "夕方〜朝（16時〜9時）" },
+            { id: 61, name: "ジンベエザメ", habitat: "海", season: "6月〜9月", time: "一日中" },
+            { id: 62, name: "リュウグウノツカイ", habitat: "海", season: "12月〜5月", time: "一日中" },
+            { id: 63, name: "アンコウ", habitat: "海", season: "11月〜3月", time: "夕方〜朝（16時〜9時）" },
+            { id: 64, name: "ウツボ", habitat: "海", season: "8月〜10月", time: "一日中" },
+            { id: 65, name: "ヒレナガエイ", habitat: "海", season: "8月〜11月", time: "早朝〜夜（4時〜21時）" },
+            { id: 66, name: "イカ", habitat: "海", season: "12月〜8月", time: "一日中" },
+            { id: 67, name: "パイク", habitat: "川", season: "9月〜12月", time: "早朝〜夜（4時〜21時）" },
+            { id: 68, name: "ワカサギ", habitat: "川", season: "12月〜2月", time: "一日中" },
+            { id: 69, name: "ブルーギル", habitat: "川", season: "一年中", time: "昼（9時〜16時）" },
+            { id: 70, name: "ブラックバス", habitat: "川", season: "一年中", time: "一日中" },
+            { id: 71, name: "ライギョ", habitat: "池", season: "6月〜8月", time: "昼（9時〜16時）" },
+            { id: 72, name: "シーラカンス", habitat: "海（雨・雪の日）", season: "一年中", time: "夕方〜朝（16時〜9時）" }
+        ];
+
+        const listContainer = document.getElementById('fish-list');
+
+        // テーブルの生成
+        fishData.forEach(fish => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td class="check-col"><input type="checkbox" id="f${fish.id}"></td>
+                <td>${fish.name}</td>
+                <td>${fish.habitat}</td>
+                <td>${fish.season}</td>
+                <td>${fish.time}</td>
+            `;
+            listContainer.appendChild(tr);
+        });
+
+        // チェック状態の保存と復元
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            const id = checkbox.id;
+            if (localStorage.getItem(id) === 'true') checkbox.checked = true;
+            checkbox.addEventListener('change', () => localStorage.setItem(id, checkbox.checked));
+        });
+    </script>
+</body>
+</html>
